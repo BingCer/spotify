@@ -981,7 +981,7 @@ async function playQueuePosition(steps, item) {
     await new Promise((resolve) => window.setTimeout(resolve, 420));
     await loadPlayer();
     setConnection("online", "Online");
-    showToast(`Playing ${item.name} from the real queue.`);
+    showToast(`Playing ${item.name} .`);
     switchPanel("now");
   } catch (error) {
     setConnection("error", "Retry");
