@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-error="500">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f9ff">
+<meta name="description" content="BingCer error page">
+<title>Error — BingCer</title>
+<link rel="icon" type="image/png" href="/assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;500;600;700&family=Roboto+Flex:opsz,wght@8..144,300..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,300..700,0..1,-25..200" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    color-scheme: light;
+    --bg: #f7f9ff;
+    --surface: #ffffff;
+    --surface-low: #f2f5fc;
+    --surface-mid: #e9eef8;
+    --surface-high: #dfe7f4;
+    --surface-glass: rgba(247,249,255,.82);
+    --text: #191c20;
+    --text-2: #43474e;
+    --text-3: #73777f;
+    --outline: #c3c7cf;
+    --outline-soft: rgba(67,71,78,.13);
+    --primary: #0b57d0;
+    --primary-hover: #0842a0;
+    --primary-soft: #d7e3ff;
+    --on-primary-soft: #001b3f;
+    --error: #b3261e;
+    --shadow-1: 0 1px 2px rgba(31,35,40,.08), 0 1px 3px 1px rgba(31,35,40,.05);
+    --shadow-2: 0 8px 28px rgba(31,35,40,.10), 0 2px 8px rgba(31,35,40,.06);
+    --shadow-3: 0 20px 60px rgba(31,35,40,.17);
+    --radius-sm: 14px;
+    --radius-md: 20px;
+    --radius-lg: 28px;
+    --radius-xl: 36px;
+    --nav-h: 82px;
+    --content-w: 1180px;
+    --ease: cubic-bezier(.2,0,0,1);
+    --page-accent: #0b57d0;
+    --page-accent-soft: #d7e3ff;
+  }
+
+  html[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #101318;
+    --surface: #191c20;
+    --surface-low: #1e2228;
+    --surface-mid: #262a31;
+    --surface-high: #30353d;
+    --surface-glass: rgba(16,19,24,.84);
+    --text: #e2e2e9;
+    --text-2: #c3c6cf;
+    --text-3: #8d9199;
+    --outline: #8d9199;
+    --outline-soft: rgba(227,226,233,.12);
+    --primary: #a8c7fa;
+    --primary-hover: #d2e3fc;
+    --primary-soft: #0d356d;
+    --on-primary-soft: #d7e3ff;
+    --error: #ffb4ab;
+    --shadow-1: 0 1px 2px rgba(0,0,0,.32), 0 1px 3px 1px rgba(0,0,0,.18);
+    --shadow-2: 0 8px 28px rgba(0,0,0,.34), 0 2px 8px rgba(0,0,0,.20);
+    --shadow-3: 0 20px 60px rgba(0,0,0,.50);
+    --page-accent: #a8c7fa;
+    --page-accent-soft: #0d356d;
+  }
+
+  html { min-height: 100%; scroll-behavior: smooth; }
+  body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    background:
+      radial-gradient(circle at 8% 8%, rgba(168,199,250,.30), transparent 28rem),
+      radial-gradient(circle at 92% 18%, rgba(232,222,248,.42), transparent 30rem),
+      var(--bg);
+    color: var(--text);
+    font-family: "Roboto Flex", "Noto Sans Sinhala", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  button, input { font: inherit; }
+  button, a { -webkit-tap-highlight-color: transparent; }
+  button { color: inherit; }
+  a { color: inherit; }
+  [hidden] { display: none !important; }
+  ::selection { background: var(--primary-soft); color: var(--on-primary-soft); }
+  .material-symbols-rounded {
+    font-variation-settings: "FILL" 0, "wght" 520, "GRAD" 0, "opsz" 24;
+    line-height: 1;
+  }
+  .material-symbols-rounded.filled { font-variation-settings: "FILL" 1, "wght" 520, "GRAD" 0, "opsz" 24; }
+
+  /* Homepage navigation */
+  .topbar {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 1000;
+    height: var(--nav-h);
+    padding: 12px max(16px, env(safe-area-inset-left)) 10px max(16px, env(safe-area-inset-right));
+    pointer-events: none;
+  }
+  .topbar-inner {
+    position: relative;
+    width: min(100%, var(--content-w));
+    height: 60px;
+    margin: 0 auto;
+    padding: 0 10px 0 12px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid var(--outline-soft);
+    border-radius: 24px;
+    background: var(--surface-glass);
+    backdrop-filter: blur(22px) saturate(145%);
+    -webkit-backdrop-filter: blur(22px) saturate(145%);
+    box-shadow: var(--shadow-1);
+    pointer-events: auto;
+    transition: box-shadow .25s var(--ease), background .25s var(--ease);
+  }
+  .topbar.scrolled .topbar-inner { box-shadow: var(--shadow-2); }
+  .brand {
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    width: fit-content;
+    text-decoration: none;
+    border-radius: 18px;
+  }
+  .brand-copy { display: grid; line-height: 1.05; }
+  .brand-name { font-size: 15px; font-weight: 720; letter-spacing: -.02em; }
+  .brand-sub { margin-top: 4px; font-size: 10px; color: var(--text-3); letter-spacing: .05em; text-transform: uppercase; }
+  .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 17px;
+    border-radius: 999px;
+    color: var(--text-2);
+    font-size: 13px;
+    font-weight: 620;
+    text-decoration: none;
+    transition: background .2s var(--ease), color .2s var(--ease);
+  }
+  .nav-link:hover { background: var(--surface-mid); color: var(--text); }
+  .nav-link.active { background: var(--primary-soft); color: var(--on-primary-soft); }
+  .nav-actions { justify-self: end; display: flex; align-items: center; gap: 6px; }
+  .main-nav { min-width: 0; }
+  .mobile-nav-toggle { display: none !important; }
+  .icon-button, .assist-button, .page-button, .game-launcher, .game-close, .mini-action {
+    border: 0;
+    cursor: pointer;
+    transition: transform .18s var(--ease), background .2s var(--ease), color .2s var(--ease), box-shadow .2s var(--ease);
+  }
+  .icon-button {
+    width: 42px;
+    height: 42px;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 15px;
+    background: transparent;
+  }
+  .icon-button:hover { background: var(--surface-mid); }
+  .icon-button:active, .assist-button:active, .page-button:active, .game-launcher:active { transform: scale(.96); }
+  .assist-button {
+    height: 42px;
+    padding: 0 15px 0 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 15px;
+    background: var(--primary-soft);
+    color: var(--on-primary-soft);
+    font-size: 12px;
+    font-weight: 680;
+  }
+  .assist-button kbd {
+    padding: 2px 5px;
+    border: 1px solid var(--outline-soft);
+    border-radius: 6px;
+    background: rgba(255,255,255,.38);
+    color: inherit;
+    font-size: 9px;
+    font-family: inherit;
+  }
+
+  /* Error view */
+  main {
+    flex: 1;
+    width: min(calc(100% - 32px), var(--content-w));
+    margin: 0 auto;
+    padding: calc(var(--nav-h) + 38px) 0 8px;
+    display: grid;
+    place-items: center;
+  }
+  .error-shell {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(300px, .92fr);
+    gap: 18px;
+    align-items: stretch;
+  }
+  .error-card, .signal-card {
+    border: 1px solid var(--outline-soft);
+    box-shadow: var(--shadow-1);
+  }
+  .error-card {
+    position: relative;
+    overflow: hidden;
+    min-height: 520px;
+    padding: clamp(28px, 5vw, 64px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: var(--radius-xl);
+    background: var(--surface);
+  }
+  .error-card::after {
+    content: "";
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    right: -118px;
+    bottom: -138px;
+    border: 54px solid var(--page-accent-soft);
+    border-radius: 50%;
+    opacity: .7;
+    pointer-events: none;
+  }
+  .status-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .status-pill, .safety-pill {
+    width: fit-content;
+    min-height: 34px;
+    padding: 0 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border-radius: 999px;
+    background: var(--page-accent-soft);
+    color: var(--on-primary-soft);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .02em;
+  }
+  .safety-pill { background: var(--surface-low); color: var(--text-2); }
+  .status-pill .material-symbols-rounded, .safety-pill .material-symbols-rounded { font-size: 17px; }
+  .error-code {
+    position: relative;
+    z-index: 1;
+    margin: 20px 0 2px -7px;
+    color: var(--page-accent);
+    font-size: clamp(92px, 15vw, 170px);
+    font-weight: 800;
+    line-height: .82;
+    letter-spacing: -.095em;
+  }
+  .error-card h1 {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin-top: 22px;
+    font-size: clamp(31px, 4.7vw, 56px);
+    line-height: 1.02;
+    letter-spacing: -.055em;
+  }
+  .error-copy {
+    position: relative;
+    z-index: 1;
+    max-width: 620px;
+    margin-top: 16px;
+    color: var(--text-2);
+    font-size: clamp(14px, 1.5vw, 17px);
+    line-height: 1.65;
+  }
+  .page-actions {
+    position: relative;
+    z-index: 1;
+    margin-top: 28px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .page-button {
+    min-height: 48px;
+    padding: 0 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 16px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .page-button.primary { background: var(--primary); color: #fff; box-shadow: 0 5px 16px rgba(11,87,208,.20); }
+  html[data-theme="dark"] .page-button.primary { color: #062e6f; }
+  .page-button.primary:hover { background: var(--primary-hover); }
+  .page-button.tonal { background: var(--surface-mid); color: var(--text); }
+  .page-button.tonal:hover { background: var(--surface-high); }
+  .page-button.icon-only { width: 48px; padding: 0; }
+
+  .signal-card {
+    position: relative;
+    overflow: hidden;
+    min-height: 520px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--radius-xl);
+    background: var(--surface-low);
+  }
+  .signal-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .signal-head strong { font-size: 13px; letter-spacing: -.015em; }
+  .live-state {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-3);
+    font-size: 10px;
+    font-weight: 680;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+  .live-state::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--page-accent); box-shadow: 0 0 0 5px var(--page-accent-soft); }
+  .orbit-scene {
+    position: relative;
+    min-height: 300px;
+    flex: 1;
+    display: grid;
+    place-items: center;
+  }
+  .orbit-ring {
+    position: absolute;
+    width: min(76%, 280px);
+    aspect-ratio: 1;
+    border: 1px dashed var(--outline);
+    border-radius: 50%;
+    animation: orbitSpin 22s linear infinite;
+  }
+  .orbit-ring::before, .orbit-ring::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 6px;
+    background: var(--page-accent);
+    box-shadow: var(--shadow-1);
+  }
+  .orbit-ring::before { left: 12%; top: 8%; }
+  .orbit-ring::after { right: 4%; bottom: 23%; background: var(--surface); border: 2px solid var(--page-accent); }
+  .orbit-ring.inner { width: min(50%, 184px); animation-direction: reverse; animation-duration: 15s; opacity: .64; }
+  .orbit-ring.inner::before { left: 74%; top: 0; width: 10px; height: 10px; }
+  .orbit-ring.inner::after { display: none; }
+  @keyframes orbitSpin { to { transform: rotate(360deg); } }
+  .status-orb {
+    position: relative;
+    z-index: 2;
+    width: 104px;
+    height: 104px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255,255,255,.58);
+    border-radius: 34px;
+    background: var(--page-accent-soft);
+    color: var(--page-accent);
+    box-shadow: var(--shadow-2);
+    transform: rotate(-5deg);
+    animation: softFloat 4.6s var(--ease) infinite;
+  }
+  .status-orb .material-symbols-rounded { font-size: 50px; }
+  @keyframes softFloat { 0%,100% { transform: translateY(0) rotate(-5deg); } 50% { transform: translateY(-10px) rotate(3deg); } }
+  .route-list { display: grid; gap: 8px; }
+  .route-item {
+    min-height: 50px;
+    padding: 0 13px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    border-radius: 16px;
+    background: var(--surface);
+    color: var(--text-2);
+    font-size: 12px;
+    font-weight: 610;
+  }
+  .route-dot { width: 10px; height: 10px; flex: 0 0 auto; border: 2px solid var(--outline); border-radius: 50%; }
+  .route-item.ok .route-dot { border-color: var(--page-accent); background: var(--page-accent); box-shadow: 0 0 0 4px var(--page-accent-soft); }
+  .route-item.blocked { color: var(--text); font-weight: 700; }
+  .route-item.blocked .route-dot { border-color: var(--error); background: var(--error); }
+
+  /* Footer copied from the homepage */
+  footer {
+    width: min(calc(100% - 32px), var(--content-w));
+    margin: 62px auto 20px;
+    padding: 24px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    border-top: 1px solid var(--outline-soft);
+    color: var(--text-3);
+    font-size: 11px;
+  }
+  .footer-links { display: flex; flex-wrap: wrap; gap: 5px; }
+  .footer-links a { padding: 9px 11px; border-radius: 11px; text-decoration: none; font-weight: 620; }
+  .footer-links a:hover { background: var(--surface-mid); color: var(--text); }
+
+  /* Small, visible corner game */
+  .game-launcher {
+    position: fixed;
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
+    z-index: 920;
+    min-height: 42px;
+    padding: 0 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid var(--outline-soft);
+    border-radius: 15px;
+    background: var(--surface-glass);
+    color: var(--text-2);
+    box-shadow: var(--shadow-1);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    font-size: 11px;
+    font-weight: 680;
+  }
+  .game-launcher:hover { color: var(--text); background: var(--surface); box-shadow: var(--shadow-2); }
+  .game-launcher .material-symbols-rounded { font-size: 19px; color: var(--page-accent); }
+  .game-panel {
+    position: fixed;
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(68px, calc(env(safe-area-inset-bottom) + 60px));
+    z-index: 930;
+    width: min(330px, calc(100vw - 32px));
+    padding: 14px;
+    border: 1px solid var(--outline-soft);
+    border-radius: 24px;
+    background: var(--surface);
+    box-shadow: var(--shadow-3);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(12px) scale(.97);
+    transform-origin: bottom right;
+    transition: opacity .2s var(--ease), visibility .2s var(--ease), transform .2s var(--ease);
+  }
+  .game-panel.open { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0) scale(1); }
+  .game-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 2px 2px 10px; }
+  .game-title { display: grid; gap: 2px; }
+  .game-title strong { font-size: 13px; }
+  .game-title span { color: var(--text-3); font-size: 10px; }
+  .game-close { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 12px; background: transparent; }
+  .game-close:hover { background: var(--surface-mid); }
+  .game-close .material-symbols-rounded { font-size: 19px; }
+  .game-stage { position: relative; overflow: hidden; border-radius: 17px; background: var(--surface-low); border: 1px solid var(--outline-soft); }
+  #gameCanvas { display: block; width: 100%; height: auto; aspect-ratio: 304 / 172; touch-action: manipulation; cursor: pointer; }
+  .game-status {
+    min-height: 34px;
+    padding: 9px 2px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    color: var(--text-3);
+    font-size: 10px;
+    font-weight: 600;
+  }
+  .game-score { color: var(--text); font-variant-numeric: tabular-nums; }
+  .mini-action { padding: 7px 10px; border-radius: 10px; background: var(--surface-mid); font-size: 10px; font-weight: 700; }
+  .mini-action:hover { background: var(--surface-high); }
+
+  /* Navigation helper + shortcuts */
+  .dialog-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 2100;
+    display: grid;
+    place-items: center;
+    padding: 18px;
+    background: rgba(16,19,24,.36);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .2s var(--ease), visibility .2s var(--ease);
+  }
+  .dialog-backdrop.open { opacity: 1; visibility: visible; pointer-events: auto; }
+  .dialog-panel {
+    width: min(100%, 480px);
+    padding: 22px;
+    border-radius: 28px;
+    background: var(--surface);
+    box-shadow: var(--shadow-3);
+    transform: translateY(12px) scale(.98);
+    transition: transform .22s var(--ease);
+  }
+  .dialog-backdrop.open .dialog-panel { transform: translateY(0) scale(1); }
+  .dialog-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+  .dialog-head h2 { font-size: 21px; letter-spacing: -.035em; }
+  .dialog-head p { max-width: 360px; margin-top: 6px; color: var(--text-2); font-size: 12px; line-height: 1.55; }
+  .dialog-links { margin-top: 18px; display: grid; gap: 8px; }
+  .dialog-link, .shortcut-row {
+    min-height: 48px;
+    padding: 0 13px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-radius: 15px;
+    background: var(--surface-low);
+    color: var(--text-2);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 650;
+  }
+  .dialog-link:hover { background: var(--surface-mid); color: var(--text); }
+  .dialog-link > span:first-child { display: inline-flex; align-items: center; gap: 10px; }
+  .dialog-link .material-symbols-rounded { font-size: 20px; }
+  .shortcut-row kbd { padding: 4px 7px; border: 1px solid var(--outline-soft); border-radius: 7px; background: var(--surface); color: var(--text); font-family: inherit; font-size: 10px; font-weight: 650; }
+
+  @media (max-width: 900px) {
+    .error-shell { grid-template-columns: 1fr; }
+    .error-card, .signal-card { min-height: auto; }
+    .signal-card { padding: 20px; }
+    .orbit-scene { min-height: 260px; }
+  }
+  @media (max-width: 794px) {
+    :root { --nav-h: 74px; }
+    .topbar { padding: 9px 10px 7px; }
+    .topbar-inner { height: 56px; grid-template-columns: minmax(0,1fr) auto; border-radius: 21px; }
+    .brand-sub { display: none; }
+    .brand { padding-left: 4px; }
+    .mobile-nav-toggle { display: inline-grid !important; }
+    .main-nav {
+      position: absolute;
+      top: 64px;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(-10px) scale(.985);
+      transform-origin: top center;
+      transition: opacity .22s var(--ease), visibility .22s var(--ease), transform .22s var(--ease);
+    }
+    .main-nav.open { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0) scale(1); }
+    .main-nav .nav-links {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 4px;
+      padding: 10px;
+      border: 1px solid var(--outline-soft);
+      border-radius: 22px;
+      background: var(--surface);
+      box-shadow: var(--shadow-2);
+    }
+    .main-nav .nav-link { width: 100%; min-height: 48px; justify-content: flex-start; padding: 0 16px; border-radius: 15px; font-size: 14px; }
+    .assist-button > span:nth-child(2), .assist-button kbd { display: none; }
+    .assist-button { width: 42px; padding: 0; justify-content: center; }
+    .nav-actions { gap: 2px; }
+    main { width: min(calc(100% - 20px), var(--content-w)); padding-top: calc(var(--nav-h) + 26px); }
+    .error-card { padding: 30px 24px; border-radius: 30px; }
+    .signal-card { border-radius: 30px; }
+    footer { width: min(calc(100% - 20px), var(--content-w)); flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 520px) {
+    .brand-name { font-size: 14px; }
+    .icon-button[title="Keyboard shortcuts"] { display: none; }
+    .error-code { font-size: clamp(86px, 31vw, 128px); }
+    .error-card h1 { font-size: clamp(30px, 10vw, 43px); }
+    .page-actions { align-items: stretch; }
+    .page-button.primary, .page-button.tonal:not(.icon-only) { flex: 1; }
+    .game-launcher span:last-child { display: none; }
+    .game-launcher { width: 42px; padding: 0; justify-content: center; border-radius: 15px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar" id="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="/" aria-label="BingCer home">
+      <span class="brand-copy">
+        <span class="brand-name">BingCer</span>
+        <span class="brand-sub">THE CHOPPED NGA</span>
+      </span>
+    </a>
+
+    <nav class="main-nav" id="mainNav" aria-label="Main navigation">
+      <ul class="nav-links">
+        <li><a class="nav-link active" href="/">Home</a></li>
+        <li><a class="nav-link" href="/projects">Projects</a></li>
+        <li><a class="nav-link" href="/about">About</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="icon-button mobile-nav-toggle" id="mobileNavToggle" type="button" aria-label="Open navigation" aria-controls="mainNav" aria-expanded="false" title="Menu">
+        <span class="material-symbols-rounded">menu</span>
+      </button>
+      <button class="assist-button" id="openAssistant" type="button" aria-label="Open Bing Assist">
+        <span class="material-symbols-rounded filled">auto_awesome</span>
+        <span>Bing Assist</span>
+        <kbd>Ctrl K</kbd>
+      </button>
+      <button class="icon-button" id="themeToggle" type="button" aria-label="Switch to dark theme" title="Theme">
+        <span class="material-symbols-rounded">dark_mode</span>
+      </button>
+      <button class="icon-button" id="shortcutButton" type="button" aria-label="Keyboard shortcuts" title="Keyboard shortcuts">
+        <span class="material-symbols-rounded">keyboard</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="error-shell" aria-labelledby="errorTitle">
+    <article class="error-card">
+      <div class="status-row">
+        <span class="status-pill"><span class="material-symbols-rounded" id="statusMiniIcon">warning</span><span id="statusName">Error</span></span>
+        <span class="safety-pill"><span class="material-symbols-rounded">shield</span>Safe stop</span>
+      </div>
+      <div class="error-code" id="errorCode" aria-label="Error code">400</div>
+      <h1 id="errorTitle">Something went sideways.</h1>
+      <p class="error-copy" id="errorDescription">BingCer could not finish this request, but there is an easy way back.</p>
+      <div class="page-actions">
+        <a class="page-button primary" href="/"><span class="material-symbols-rounded">home</span>Go home</a>
+        <button class="page-button tonal" id="goBackButton" type="button"><span class="material-symbols-rounded">arrow_back</span>Go back</button>
+        <button class="page-button tonal icon-only" id="reloadButton" type="button" aria-label="Reload page" title="Reload"><span class="material-symbols-rounded">refresh</span></button>
+      </div>
+    </article>
+
+    <aside class="signal-card" aria-label="Request route status">
+      <div class="signal-head">
+        <strong>Route monitor</strong>
+        <span class="live-state">Paused safely</span>
+      </div>
+      <div class="orbit-scene" aria-hidden="true">
+        <span class="orbit-ring"></span>
+        <span class="orbit-ring inner"></span>
+        <span class="status-orb"><span class="material-symbols-rounded" id="statusOrbIcon">warning</span></span>
+      </div>
+      <div class="route-list">
+        <div class="route-item ok"><span class="route-dot"></span><span>Request reached BingCer</span></div>
+        <div class="route-item blocked"><span class="route-dot"></span><span id="routeIssue">The route could not continue</span></div>
+        <div class="route-item ok"><span class="route-dot"></span><span>A safe way back is ready</span></div>
+      </div>
+    </aside>
+  </section>
+</main>
+
+<footer>
+  <span>© 2026 ALA Corporation · BingCer</span>
+  <div class="footer-links"><a href="/about">About</a></div>
+</footer>
+
+<button class="game-launcher" id="gameLauncher" type="button" aria-controls="gamePanel" aria-expanded="false">
+  <span class="material-symbols-rounded">sports_esports</span><span>Quick game</span>
+</button>
+
+<section class="game-panel" id="gamePanel" aria-label="Bing Bounce mini game">
+  <div class="game-head">
+    <div class="game-title"><strong>Bing Bounce</strong><span>Jump the dropped packets.</span></div>
+    <button class="game-close" id="gameClose" type="button" aria-label="Close game"><span class="material-symbols-rounded">close</span></button>
+  </div>
+  <div class="game-stage"><canvas id="gameCanvas" width="608" height="344" aria-label="Jumping game"></canvas></div>
+  <div class="game-status">
+    <span id="gameHint">Tap the game or press Space to jump</span>
+    <span class="game-score">Score <strong id="gameScore">0</strong></span>
+    <button class="mini-action" id="restartGame" type="button" hidden>Again</button>
+  </div>
+</section>
+
+<div class="dialog-backdrop" id="assistantDialog" role="dialog" aria-modal="true" aria-labelledby="assistantTitle">
+  <section class="dialog-panel">
+    <div class="dialog-head">
+      <div><h2 id="assistantTitle">Bing Assist</h2><p>This page hit a dead end. Pick a working route and I will get you moving again.</p></div>
+      <button class="game-close dialog-close" type="button" aria-label="Close"><span class="material-symbols-rounded">close</span></button>
+    </div>
+    <div class="dialog-links">
+      <a class="dialog-link" href="/"><span><span class="material-symbols-rounded">home</span>Home feed</span><span class="material-symbols-rounded">arrow_forward</span></a>
+      <a class="dialog-link" href="/projects"><span><span class="material-symbols-rounded">construction</span>Projects</span><span class="material-symbols-rounded">arrow_forward</span></a>
+      <a class="dialog-link" href="/about"><span><span class="material-symbols-rounded">person</span>About Bimsara</span><span class="material-symbols-rounded">arrow_forward</span></a>
+    </div>
+  </section>
+</div>
+
+<div class="dialog-backdrop" id="shortcutDialog" role="dialog" aria-modal="true" aria-labelledby="shortcutTitle">
+  <section class="dialog-panel">
+    <div class="dialog-head">
+      <div><h2 id="shortcutTitle">Keyboard shortcuts</h2><p>A few quick ways out of here.</p></div>
+      <button class="game-close dialog-close" type="button" aria-label="Close"><span class="material-symbols-rounded">close</span></button>
+    </div>
+    <div class="dialog-links">
+      <div class="shortcut-row"><span>Open Bing Assist</span><kbd>Ctrl K</kbd></div>
+      <div class="shortcut-row"><span>Go home</span><kbd>H</kbd></div>
+      <div class="shortcut-row"><span>Go back</span><kbd>B</kbd></div>
+      <div class="shortcut-row"><span>Toggle quick game</span><kbd>G</kbd></div>
+    </div>
+  </section>
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  const configs = {
+    "400": {
+      name: "Bad Request",
+      title: "That request came in scrambled.",
+      description: "The page could not understand what was sent. Head back, check the link, or return home and try a cleaner route.",
+      issue: "The request format did not make sense",
+      icon: "data_object"
+    },
+    "401": {
+      name: "Unauthorized",
+      title: "This door needs a sign-in.",
+      description: "BingCer needs a valid session before it can show this page. Return home, sign in where required, then come back.",
+      issue: "No valid access session was found",
+      icon: "key"
+    },
+    "403": {
+      name: "Forbidden",
+      title: "This room is off limits.",
+      description: "The page exists, but your current access does not open it. There is nothing broken on your device.",
+      issue: "This route is not open to this visitor",
+      icon: "lock"
+    },
+    "404": {
+      name: "Not Found",
+      title: "This page wandered off.",
+      description: "The link may be old, mistyped, or moved somewhere new. The homepage still knows the way around.",
+      issue: "No page lives at this address",
+      icon: "explore_off"
+    },
+    "500": {
+      name: "Internal Server Error",
+      title: "Something snapped backstage.",
+      description: "The server tripped while building this page. Give it another try, or head home while BingCer gets itself together.",
+      issue: "The server could not finish the job",
+      icon: "build_circle"
+    },
+    "503": {
+      name: "Service Unavailable",
+      title: "BingCer is catching its breath.",
+      description: "The site is temporarily too busy or under maintenance. A refresh in a moment should bring it back.",
+      issue: "The service is temporarily unavailable",
+      icon: "cloud_off"
+    }
+  };
+
+  const $ = selector => document.querySelector(selector);
+  const code = document.documentElement.dataset.error;
+  const config = configs[code] || configs["404"];
+  const metaTheme = $('meta[name="theme-color"]');
+  const topbar = $("#topbar");
+  const mainNav = $("#mainNav");
+  const mobileNavToggle = $("#mobileNavToggle");
+  const themeToggle = $("#themeToggle");
+  const assistantDialog = $("#assistantDialog");
+  const shortcutDialog = $("#shortcutDialog");
+
+  document.title = `${code} ${config.name} — BingCer`;
+  $("#errorCode").textContent = code;
+  $("#statusName").textContent = config.name;
+  $("#errorTitle").textContent = config.title;
+  $("#errorDescription").textContent = config.description;
+  $("#routeIssue").textContent = config.issue;
+  $("#statusMiniIcon").textContent = config.icon;
+  $("#statusOrbIcon").textContent = config.icon;
+
+  const THEME_KEY = "bingcer-theme-v4";
+  function applyTheme(theme) {
+    const safeTheme = theme === "dark" ? "dark" : "light";
+    document.documentElement.dataset.theme = safeTheme;
+    localStorage.setItem(THEME_KEY, safeTheme);
+    const dark = safeTheme === "dark";
+    themeToggle.innerHTML = `<span class="material-symbols-rounded">${dark ? "light_mode" : "dark_mode"}</span>`;
+    themeToggle.setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme");
+    metaTheme.setAttribute("content", dark ? "#101318" : "#f7f9ff");
+  }
+  applyTheme(localStorage.getItem(THEME_KEY) === "dark" ? "dark" : "light");
+  themeToggle.addEventListener("click", () => applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark"));
+
+  function setMobileNav(open) {
+    const shouldOpen = Boolean(open) && window.innerWidth <= 794;
+    mainNav.classList.toggle("open", shouldOpen);
+    mobileNavToggle.setAttribute("aria-expanded", String(shouldOpen));
+    mobileNavToggle.setAttribute("aria-label", shouldOpen ? "Close navigation" : "Open navigation");
+    mobileNavToggle.innerHTML = `<span class="material-symbols-rounded">${shouldOpen ? "close" : "menu"}</span>`;
+  }
+  mobileNavToggle.addEventListener("click", event => {
+    event.stopPropagation();
+    setMobileNav(!mainNav.classList.contains("open"));
+  });
+  mainNav.addEventListener("click", event => { if (event.target.closest("a")) setMobileNav(false); });
+  document.addEventListener("click", event => {
+    if (mainNav.classList.contains("open") && !event.target.closest(".topbar-inner")) setMobileNav(false);
+  });
+  window.addEventListener("resize", () => { if (window.innerWidth > 794) setMobileNav(false); });
+  window.addEventListener("scroll", () => topbar.classList.toggle("scrolled", window.scrollY > 18), { passive: true });
+
+  $("#goBackButton").addEventListener("click", () => {
+    if (history.length > 1) history.back();
+    else location.href = "/";
+  });
+  $("#reloadButton").addEventListener("click", () => location.reload());
+
+  function openDialog(dialog) {
+    dialog.classList.add("open");
+    dialog.querySelector(".dialog-close").focus();
+  }
+  function closeDialog(dialog) { dialog.classList.remove("open"); }
+  $("#openAssistant").addEventListener("click", () => openDialog(assistantDialog));
+  $("#shortcutButton").addEventListener("click", () => openDialog(shortcutDialog));
+  document.querySelectorAll(".dialog-backdrop").forEach(dialog => {
+    dialog.querySelector(".dialog-close").addEventListener("click", () => closeDialog(dialog));
+    dialog.addEventListener("click", event => { if (event.target === dialog) closeDialog(dialog); });
+  });
+
+  /* Bing Bounce: a tiny, deliberately visible corner game. */
+  const gameLauncher = $("#gameLauncher");
+  const gamePanel = $("#gamePanel");
+  const gameClose = $("#gameClose");
+  const canvas = $("#gameCanvas");
+  const ctx = canvas.getContext("2d");
+  const gameHint = $("#gameHint");
+  const scoreNode = $("#gameScore");
+  const restartButton = $("#restartGame");
+  const W = canvas.width;
+  const H = canvas.height;
+  const groundY = 274;
+  const player = { x: 76, y: groundY - 46, w: 42, h: 46, vy: 0 };
+  let obstacles = [];
+  let stars = [];
+  let frame = 0;
+  let score = 0;
+  let running = false;
+  let started = false;
+  let raf = 0;
+  let lastTime = 0;
+
+  function palette() {
+    const style = getComputedStyle(document.documentElement);
+    return {
+      bg: style.getPropertyValue("--surface-low").trim(),
+      surface: style.getPropertyValue("--surface").trim(),
+      text: style.getPropertyValue("--text").trim(),
+      muted: style.getPropertyValue("--text-3").trim(),
+      accent: style.getPropertyValue("--page-accent").trim(),
+      soft: style.getPropertyValue("--page-accent-soft").trim(),
+      outline: style.getPropertyValue("--outline-soft").trim()
+    };
+  }
+
+  function roundedRect(x, y, width, height, radius) {
+    const r = Math.min(radius, width / 2, height / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + width - r, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + r);
+    ctx.lineTo(x + width, y + height - r);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - r, y + height);
+    ctx.lineTo(x + r, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+  }
+
+  function resetGame(autoStart = false) {
+    cancelAnimationFrame(raf);
+    player.y = groundY - player.h;
+    player.vy = 0;
+    obstacles = [];
+    stars = Array.from({ length: 16 }, (_, index) => ({
+      x: (index * 83 + 28) % W,
+      y: 34 + ((index * 47) % 150),
+      r: index % 3 === 0 ? 3 : 2
+    }));
+    frame = 0;
+    score = 0;
+    scoreNode.textContent = "0";
+    started = autoStart;
+    running = autoStart;
+    restartButton.hidden = true;
+    gameHint.textContent = autoStart ? "Tap or press Space to jump" : "Tap the game or press Space to start";
+    draw();
+    if (autoStart) {
+      lastTime = performance.now();
+      raf = requestAnimationFrame(loop);
+    }
+  }
+
+  function jump() {
+    if (!gamePanel.classList.contains("open")) return;
+    if (!started || !running) {
+      resetGame(true);
+      player.vy = -16.2;
+      return;
+    }
+    if (player.y >= groundY - player.h - 2) player.vy = -16.2;
+  }
+
+  function spawnObstacle() {
+    const height = 36 + Math.random() * 40;
+    const width = 30 + Math.random() * 26;
+    obstacles.push({ x: W + 20, y: groundY - height, w: width, h: height });
+  }
+
+  function hit(a, b) {
+    const pad = 7;
+    return a.x + pad < b.x + b.w && a.x + a.w - pad > b.x && a.y + pad < b.y + b.h && a.y + a.h - 3 > b.y;
+  }
+
+  function update(delta) {
+    const step = Math.min(2, delta / 16.67);
+    frame += step;
+    player.vy += .86 * step;
+    player.y += player.vy * step;
+    if (player.y > groundY - player.h) {
+      player.y = groundY - player.h;
+      player.vy = 0;
+    }
+    const speed = 7.2 + Math.min(5.5, score / 65);
+    obstacles.forEach(obstacle => obstacle.x -= speed * step);
+    obstacles = obstacles.filter(obstacle => obstacle.x + obstacle.w > -20);
+    if (!obstacles.length || obstacles[obstacles.length - 1].x < W - (250 + Math.random() * 210)) spawnObstacle();
+    if (obstacles.some(obstacle => hit(player, obstacle))) {
+      running = false;
+      restartButton.hidden = false;
+      gameHint.textContent = "Packet collision";
+      return;
+    }
+    score += .12 * step;
+    scoreNode.textContent = String(Math.floor(score));
+  }
+
+  function draw() {
+    const c = palette();
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = c.bg;
+    ctx.fillRect(0, 0, W, H);
+
+    stars.forEach((star, index) => {
+      ctx.globalAlpha = .28 + ((index + Math.floor(frame / 20)) % 3) * .12;
+      ctx.fillStyle = c.accent;
+      ctx.beginPath();
+      ctx.arc((star.x - frame * .18 + W) % W, star.y, star.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+
+    ctx.strokeStyle = c.outline;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(0, groundY + 2);
+    ctx.lineTo(W, groundY + 2);
+    ctx.stroke();
+
+    obstacles.forEach(obstacle => {
+      ctx.fillStyle = c.muted;
+      roundedRect(obstacle.x, obstacle.y, obstacle.w, obstacle.h, 11);
+      ctx.fill();
+      ctx.fillStyle = c.bg;
+      for (let y = obstacle.y + 12; y < obstacle.y + obstacle.h - 5; y += 16) {
+        ctx.fillRect(obstacle.x + 10, y, Math.max(5, obstacle.w - 20), 4);
+      }
+    });
+
+    ctx.save();
+    const tilt = Math.max(-.16, Math.min(.16, player.vy * .012));
+    ctx.translate(player.x + player.w / 2, player.y + player.h / 2);
+    ctx.rotate(tilt);
+    ctx.fillStyle = c.accent;
+    roundedRect(-player.w / 2, -player.h / 2, player.w, player.h, 14);
+    ctx.fill();
+    ctx.fillStyle = c.surface;
+    ctx.beginPath();
+    ctx.arc(-8, -3, 4, 0, Math.PI * 2);
+    ctx.arc(8, -3, 4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = c.surface;
+    ctx.lineWidth = 3;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(-8, 11);
+    ctx.quadraticCurveTo(0, 16, 8, 11);
+    ctx.stroke();
+    ctx.restore();
+
+    if (!started) {
+      ctx.fillStyle = c.text;
+      ctx.font = "700 24px Roboto Flex, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("Tap to start", W / 2, 86);
+      ctx.fillStyle = c.muted;
+      ctx.font = "500 18px Roboto Flex, sans-serif";
+      ctx.fillText("Jump over dropped packets", W / 2, 118);
+    } else if (!running) {
+      ctx.fillStyle = c.surface;
+      ctx.globalAlpha = .88;
+      roundedRect(140, 80, 328, 112, 24);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = c.text;
+      ctx.font = "750 27px Roboto Flex, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("Packet collision", W / 2, 126);
+      ctx.fillStyle = c.muted;
+      ctx.font = "550 17px Roboto Flex, sans-serif";
+      ctx.fillText("Tap Again for another run", W / 2, 160);
+    }
+  }
+
+  function loop(time) {
+    if (!running || !gamePanel.classList.contains("open")) return;
+    const delta = time - lastTime;
+    lastTime = time;
+    update(delta);
+    draw();
+    if (running) raf = requestAnimationFrame(loop);
+  }
+
+  function setGameOpen(open) {
+    gamePanel.classList.toggle("open", open);
+    gameLauncher.setAttribute("aria-expanded", String(open));
+    if (open) {
+      resetGame(false);
+      gameClose.focus();
+    } else {
+      running = false;
+      cancelAnimationFrame(raf);
+      gameLauncher.focus();
+    }
+  }
+
+  gameLauncher.addEventListener("click", () => setGameOpen(!gamePanel.classList.contains("open")));
+  gameClose.addEventListener("click", () => setGameOpen(false));
+  canvas.addEventListener("pointerdown", jump);
+  restartButton.addEventListener("click", () => resetGame(true));
+  resetGame(false);
+
+  document.addEventListener("keydown", event => {
+    const typing = event.target.matches("input, textarea, [contenteditable='true']");
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+      event.preventDefault();
+      openDialog(assistantDialog);
+      return;
+    }
+    if (event.key === "Escape") {
+      closeDialog(assistantDialog);
+      closeDialog(shortcutDialog);
+      if (gamePanel.classList.contains("open")) setGameOpen(false);
+      setMobileNav(false);
+      return;
+    }
+    if (typing) return;
+    if (event.code === "Space" && gamePanel.classList.contains("open")) {
+      event.preventDefault();
+      jump();
+    } else if (event.key.toLowerCase() === "h") {
+      location.href = "/";
+    } else if (event.key.toLowerCase() === "b") {
+      $("#goBackButton").click();
+    } else if (event.key.toLowerCase() === "g") {
+      setGameOpen(!gamePanel.classList.contains("open"));
+    }
+  });
+})();
+</script>
+</body>
+</html>
